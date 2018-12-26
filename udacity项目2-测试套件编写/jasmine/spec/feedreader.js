@@ -10,6 +10,7 @@ $(function() {
     /* 这是我们第一个测试用例 - 其中包含了一定数量的测试。这个用例的测试
      * 都是关于 Rss 源的定义的，也就是应用中的 allFeeds 变量。
     */
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 100000;
     describe('RSS Feeds', function() {
         /* 这是我们的第一个测试 - 它用来保证 allFeeds 变量被定义了而且
          * 不是空的。在你开始做这个项目剩下的工作之前最好实验一下这个测试
@@ -27,11 +28,12 @@ $(function() {
          */
         it('link is defined or not a blank',function(){
           let flag = true;
+          var regularExpressionUrl = /^((ht|f)tps?):\/\/([\w\-]+(\.[\w\-]+)*\/)*[\w\-]+(\.[\w\-]+)*\/?(\?([\w\-\.,@?^=%&:\/~\+#]*)+)?/;
           if(allFeeds.length == 0){
             flag = false
           };//先判断数组是否存在元素
           allFeeds.forEach(function(e){
-            // console.log(e);
+            expect(e.url).toMatch(regularExpressionUrl); // 检查格式
             if(e.url == undefined || e.url == ''){
               flag = false;
             };
@@ -99,9 +101,7 @@ $(function() {
        * 和异步的 done() 函数。
        */
        beforeEach(function(done){
-         loadFeed(0,function(){
-           done();
-         });
+         loadFeed(0,done);
        });
        it('is worked',function(done){
         let flag = false;
@@ -119,24 +119,25 @@ $(function() {
        * 写一个测试保证当用 loadFeed 函数加载一个新源的时候内容会真的改变。
        * 记住，loadFeed() 函数是异步的。
        */
-       let html1 = '';
-       let html2 = '';
+       let html1;
+       let html2;
        beforeEach(function(done){
-         loadFeed(0,function(){
-           html1 = $('.feed').html();
-           done();
-         });
-         loadFeed(1,function(done){
+         html1 = $('.feed').html();
+         loadFeed(1,function(){
            html2 = $('.feed').html();
+           console.log(html2);
            done();
          });
        });
        it('is worked',function(done){
          let flag = false;
+         console.log(html1);
+         console.log(html2);
          if(html1 != html2){
            flag = true;
          };
          expect(flag).toBe(true);
+         console.log('比较完成');
          done();
        });
     })
