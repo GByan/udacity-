@@ -15,9 +15,9 @@ class BooksApp extends React.Component {
      * pages, as well as provide a good URL they can bookmark and share.
      */
      currentlyReading:[],
-     wantToRead:[],
-     read:[],
-     books:[]
+    wantToRead:[],
+    read:[],
+    books:[]
   }
   // componentDidMount(){
   //   BooksAPI.getAll().then((books)=>{
@@ -119,6 +119,9 @@ class BooksApp extends React.Component {
           )}/>
         <Route path='/search' render={()=>(<Search
             books={this.state.books}
+            currentlyReading={this.state.currentlyReading}
+            wantToRead={this.state.wantToRead}
+            read = {this.state.read}
             SearchBook = {this.SearchBook}
             selectTOmove = {this.selectTOmove}
             removeBook = {this.removeBook}

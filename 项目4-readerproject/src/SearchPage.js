@@ -9,6 +9,16 @@ class Search extends Component{
     this.setState({query:query.trim()})
 
   }
+  Synchronize = (book)=>{
+    let Find
+    const shelfs = [].concat(this.props.currentlyReading,this.props.wantToRead,this.props.read)
+    Find = shelfs.filter((e)=>e.id == book.id)
+    // console.log(Find[0].shelf);
+    if(Find[0] !==  undefined){
+      return (Find[0].shelf);
+    }
+    return 'none'
+  }
   render(){
     let showingBooks = []
     if(this.props.books !== []){
@@ -40,7 +50,7 @@ class Search extends Component{
                     <div className="book-top">
                       <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks}`}}></div>
                       <div className="book-shelf-changer">
-                        <select value = {book.shelf} onChange = {(e)=>{this.props.removeBook(book);this.props.selectTOmove(e.target.value,book)}}>
+                        <select value = {this.Synchronize(book)} onChange = {(e)=>{this.props.removeBook(book);this.props.selectTOmove(e.target.value,book)}}>
                           <option value="move" disabled>Move to...</option>
                           <option value="currentlyReading">Currently Reading</option>
                           <option value="wantToRead">Want to Read</option>
